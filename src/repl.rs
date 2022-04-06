@@ -19,7 +19,7 @@ pub fn run() {
 
     loop {
         print!("user>");
-        io::stdout().flush();        
+        io::stdout().flush().unwrap();        
         let line = iterator.next().unwrap().unwrap();
         read(&line);
     }
