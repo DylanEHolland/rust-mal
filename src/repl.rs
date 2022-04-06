@@ -1,17 +1,16 @@
 use std::io::{self, BufRead};
 use crate::parser;
 
-fn eval() {
+fn _eval() {
 
 }
 
-fn print() {
+fn _print() {
 
 }
 
 fn read(line: &str) {
-    println!("> {}", line);
-    parser::parse();
+    parser::parse(line);
 }
 
 pub fn run() {
