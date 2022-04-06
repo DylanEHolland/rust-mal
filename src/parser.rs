@@ -11,7 +11,12 @@ pub fn build_tree(tokens: Vec::<char>) -> Vec::<TreeNode> {
     let working_tree = tokens.to_vec();
     let mut counter = 0;
 
-    for token in tokens {
+    loop {
+        let token = working_tree[counter];
+        if counter >= (working_tree.len() - 1) {
+            break;
+        }
+
         if token == '(' {
             let mut sub_tokens = Vec::<char>::new();
             let mut sub_counter = counter + 1;
@@ -33,7 +38,7 @@ pub fn build_tree(tokens: Vec::<char>) -> Vec::<TreeNode> {
                 is_tree: true
             };
 
-            counter += len;
+            counter += len + 1; // acount for increment to subcounter
             tree.push(node);
         } else if token == ')' {
             return tree;
@@ -43,22 +48,20 @@ pub fn build_tree(tokens: Vec::<char>) -> Vec::<TreeNode> {
                 sub_tree: Vec::<TreeNode>::new(),
                 is_tree: false
             };
-
             tree.push(node);
+            counter += 1;
         }
-
-        counter += 1;
     }
 
     return tree;
 }
 
-pub fn dump_tree(tree: Vec::<TreeNode>) {
+pub fn dump_tree(tree: Vec::<TreeNode>, prepend: String) {
     for item in tree {
         if item.is_tree {
-            dump_tree(item.sub_tree);
+            dump_tree(item.sub_tree, format!("{}->", prepend));
         } else {
-            println!("{}", item.token);
+            println!("{} {}", prepend, item.token);
         }
     }
 }
@@ -66,7 +69,7 @@ pub fn dump_tree(tree: Vec::<TreeNode>) {
 pub fn parse(line: &str) {
     let tokens = tokenize(line);
     let tree = build_tree(tokens);
-    dump_tree(tree);
+    dump_tree(tree, format!(""));
 }
 
 pub fn tokenize(line: &str) -> Vec::<char> {
